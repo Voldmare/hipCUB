@@ -35,7 +35,7 @@ jobs:
       - name: zipping files
         run: zip -r ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_${{ steps.get_version.outputs.version }}.zip . -x '*.git*' '*.idea*'
       - name: echo-step
-        run: echo "${{ steps.branch_name.outputs.branch }}"
+        run: echo "${{ steps.get_version.outputs.version }}"
       - name: uploading archive to prod
         if: ${{ steps.branch_name.outputs.branch == 'master' }}
         uses: wlixcc/SFTP-Deploy-Action@v1.0
