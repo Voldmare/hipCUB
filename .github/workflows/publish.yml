@@ -30,7 +30,7 @@ jobs:
         id: branch_name
       - name: getting tag name
         shell: bash
-        run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF#refs/tags/})"
+        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
         id: tag_name
       - name: zipping files
         run: zip -r ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_${{ steps.get_version.outputs.version }}.zip . -x '*.git*' '*.idea*'
