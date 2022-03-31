@@ -30,12 +30,12 @@ jobs:
         id: branch_name
       - name: getting tag name
         shell: bash
-        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+        run: echo ${GITHUB_REF_NAME}
         id: tag_name
       - name: zipping files
-        run: zip -r ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_${{ steps.get_version.outputs.version }}.zip . -x '*.git*' '*.idea*'
+        run: zip -r ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip . -x '*.git*' '*.idea*'
       - name: echo-step
-        run: echo "${{ steps.get_version.outputs.version }}"
+        run: echo "${GITHUB_REF_NAME}"
       - name: uploading archive to prod
         if: ${{ steps.branch_name.outputs.branch == 'master' }}
         uses: wlixcc/SFTP-Deploy-Action@v1.0
@@ -43,7 +43,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           server: ${{ secrets.SERVER }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_${{ steps.get_version.outputs.version }}.zip
+          local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
           remote_path: '${{ secrets.PROD_UPLOAD_URL }}'
           args: '-o ConnectTimeout=5'
       - name: uploading archive to staging
@@ -53,6 +53,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           server: ${{ secrets.SERVER }}
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_${{ steps.get_version.outputs.version }}.zip
+          local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
           remote_path: '${{ secrets.STG_UPLOAD_URL }}'
           args: '-o ConnectTimeout=5'
