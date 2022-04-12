@@ -5,8 +5,9 @@ name: Upload to the upload server
 # Controls when the workflow will run
 on:
   push:
+    branches: [develop, master]
     tags:
-      - rocm-5.1.0
+      - rocm-5.*
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,23 +36,23 @@ jobs:
         run: zip -r ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip . -x '*.git*' '*.idea*'
       - name: echo-step
         run: echo "${GITHUB_REF_NAME}"
-      - name: uploading archive to prod
-        if: ${{ steps.branch_name.outputs.branch == 'master' }}
-        uses: wlixcc/SFTP-Deploy-Action@v1.0
-        with:
-          username: ${{ secrets.USERNAME }}
-          server: ${{ secrets.SERVER }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
-          remote_path: '${{ secrets.PROD_UPLOAD_URL }}'
-          args: '-o ConnectTimeout=5'
-      - name: uploading archive to staging
-        if: ${{ steps.branch_name.outputs.branch == 'develop' }}
-        uses: wlixcc/SFTP-Deploy-Action@v1.0
-        with:
-          username: ${{ secrets.USERNAME }}
-          server: ${{ secrets.SERVER }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-          local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
-          remote_path: '${{ secrets.STG_UPLOAD_URL }}'
-          args: '-o ConnectTimeout=5'
+#       - name: uploading archive to prod
+#         if: ${{ steps.branch_name.outputs.branch == 'master' }}
+#         uses: wlixcc/SFTP-Deploy-Action@v1.0
+#         with:
+#           username: ${{ secrets.USERNAME }}
+#           server: ${{ secrets.SERVER }}
+#           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
+#           remote_path: '${{ secrets.PROD_UPLOAD_URL }}'
+#           args: '-o ConnectTimeout=5'
+#       - name: uploading archive to staging
+#         if: ${{ steps.branch_name.outputs.branch == 'develop' }}
+#         uses: wlixcc/SFTP-Deploy-Action@v1.0
+#         with:
+#           username: ${{ secrets.USERNAME }}
+#           server: ${{ secrets.SERVER }}
+#           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+#           local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
+#           remote_path: '${{ secrets.STG_UPLOAD_URL }}'
+#           args: '-o ConnectTimeout=5'
