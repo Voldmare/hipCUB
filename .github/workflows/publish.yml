@@ -26,14 +26,14 @@ jobs:
 
       - name: getting branch name
         shell: bash
-        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "##[set-output name=branch;]$(echo _${GITHUB_REF#refs/heads/})"
         id: branch_name
       - name: getting tag name
         shell: bash
-        run: echo "##[set-output name=tag;]$(echo ${GITHUB_REF_NAME})"
+        run: echo "##[set-output name=tag;]$(echo _${GITHUB_REF_NAME})"
         id: tag_name
       - name: zipping files
-        run: zip -r ${{ github.event.repository.name }}_${{ steps.tag_name.outputs.tag }}.zip . -x '*.git*' '*.idea*'
+        run: zip -r ${{ github.event.repository.name }}${{ steps.branch_name.outputs.branch }}${{ steps.tag_name.outputs.tag }}.zip . -x '*.git*' '*.idea*'
       - name: echo-step
         run: echo "${GITHUB_REF_NAME}"
 #       - name: uploading archive to prod
