@@ -33,7 +33,7 @@ jobs:
         run: echo ${GITHUB_REF_NAME}
         id: tag_name
       - name: zipping files
-        run: zip -r ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip . -x '*.git*' '*.idea*'
+        run: zip -r ${{ github.event.repository.name }}_${GITHUB_REF_NAME}_.zip . -x '*.git*' '*.idea*'
       - name: echo-step
         run: echo "${GITHUB_REF_NAME}"
 #       - name: uploading archive to prod
@@ -43,7 +43,7 @@ jobs:
 #           username: ${{ secrets.USERNAME }}
 #           server: ${{ secrets.SERVER }}
 #           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-#           local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
+#           local_path: ${{ github.event.repository.name }}_${GITHUB_REF_NAME}_.zip
 #           remote_path: '${{ secrets.PROD_UPLOAD_URL }}'
 #           args: '-o ConnectTimeout=5'
 #       - name: uploading archive to staging
@@ -53,6 +53,6 @@ jobs:
 #           username: ${{ secrets.USERNAME }}
 #           server: ${{ secrets.SERVER }}
 #           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
-#           local_path: ${{ github.event.repository.name }}_${{ steps.branch_name.outputs.branch }}_.zip
+#           local_path: ${{ github.event.repository.name }}_${GITHUB_REF_NAME}_.zip
 #           remote_path: '${{ secrets.STG_UPLOAD_URL }}'
 #           args: '-o ConnectTimeout=5'
