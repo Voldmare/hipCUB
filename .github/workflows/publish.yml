@@ -33,7 +33,7 @@ jobs:
         run: echo ${GITHUB_REF_NAME}
         id: tag_name
       - name: zipping files
-        run: zip -r ${{ github.event.repository.name }}_${{ steps.tag_name.outputs.branch }}.zip . -x '*.git*' '*.idea*'
+        run: zip -r ${{ github.event.repository.name }}_${{ steps.tag_name.outputs.tag }}.zip . -x '*.git*' '*.idea*'
       - name: echo-step
         run: echo "${GITHUB_REF_NAME}"
 #       - name: uploading archive to prod
